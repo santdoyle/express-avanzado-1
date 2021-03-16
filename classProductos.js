@@ -29,4 +29,24 @@ export default class Productos{
 
         return producto;
     }
+
+    actualizar(id, nuevaInfo){
+        const arr = Object.entries(this.arr)
+        
+        arr[id] = {
+            title: nuevaInfo.title + id,
+            price: nuevaInfo.price,
+            thumbnail: nuevaInfo.thumbnail,
+            id: arr.length
+        }
+
+        return arr[id]
+    }
+
+    borrar(id){
+        const listado = Object.entries(this.arr)
+        const nuevoListado = listado.splice(0, id)
+
+        return nuevoListado
+    }
 }

@@ -1,20 +1,29 @@
 import express from 'express';
 import Productos from './classProductos.js';
-
 const app = express()
+const router = express.Router()
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
+app.use('/api', router)
 
 const server = app.listen(8080, () => {
     console.log(`El servidor está conectado: ${server.address().port}`)
 })
 server.on('error', (error) => console.log(`Ocurrió un error: ${error}`))
 
+//Espacio publico del servidor
+app.use('/public', express.static('public'))
+router.get('/public', (req, resp) => {
+    resp.sendFile('/public/index.html')
+})
+
+
+//Listado de productos vacio
 const listaProductos = []
 
 //Listar todos los productos
-app.get('/api/productos/listar', (req, resp) => {
+router.get('/productos/listar', (req, resp) => {
     
     const productos = new Productos(listaProductos);
     productos.listarProductos()
@@ -28,7 +37,7 @@ app.get('/api/productos/listar', (req, resp) => {
 })
 
 //Listar producto individual
-app.get('/api/productos/listar/:id', (req, resp, next) => {
+router.get('/productos/listar/:id', (req, resp, next) => {
     
     try {
         const productos = new Productos(listaProductos);
@@ -42,7 +51,7 @@ app.get('/api/productos/listar/:id', (req, resp, next) => {
 })
 
 //Agregar nuevo producto
-app.post('/api/productos/guardar/', (req, resp, next) => {
+router.post('/productos/guardar/', (req, resp, next) => {
     try {
 
         const productos = new Productos(req.body);
@@ -57,3 +66,24 @@ app.post('/api/productos/guardar/', (req, resp, next) => {
     }
     
 })
+
+//Método para actualizar producto
+router.put('/productos/actualizar/:id', (req, resp) => {
+    const id = req.params.id
+    const productos = new Productos(listaProductos);
+    const respuesta = productos.actualizar(id, req.body)
+
+    listaProductos[id] = respuesta
+
+    resp.json(respuesta)
+})
+
+//Método para borrar producto
+router.delete('/productos/borrar/:id', (req, resp)=> {
+    const id = req.params.id
+    const productos = new Productos(listaProductos);
+    const eliminado = productos.borrar(id)
+
+    resp.json(eliminado)
+})
+
