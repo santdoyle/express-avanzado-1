@@ -10,22 +10,25 @@ export default class Productos{
     }
 
     listarPorId(id){
-        const listado = Object.entries(this.arr)
+        const listado = this.arr
+        const idInt = parseInt(id)
 
-        if(id > listado.length){
+        if(id > this.arr.length){
             throw new Error('Producto no encontrado')
         }
-        
-        return listado[id]
-    }
 
-    guardar(listado){
+        const lista = listado.find(elem => elem.id === idInt)
+        
+        return lista
+    }
+   
+    guardar(id){
 
         const producto = {
             title: this.arr.title,
             price: this.arr.price,
             thumbnail: this.arr.thumbnail,
-            id: listado.length
+            id: id
         }
 
         return producto;
@@ -52,9 +55,11 @@ export default class Productos{
     }
 
     borrar(id){
-        const listado = this.arr
-        listado.splice(id, 1)
-
-        return listado
+        const idInt = parseInt(id)
+        const index = this.arr.findIndex(el => el.id === idInt)
+        
+        this.arr.splice(index, 1)
+        
+        return this.arr
     }
 }

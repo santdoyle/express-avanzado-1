@@ -32,7 +32,7 @@ router.get('/productos/listar', (req, resp) => {
         throw new Error('No hay productos cargados')
     }
 
-    resp.send(listaProductos.flat(1))
+    resp.json(listaProductos.flat(1))
     
 })
 
@@ -43,7 +43,7 @@ router.get('/productos/listar/:id', (req, resp, next) => {
         const productos = new Productos(listaProductos);
         const guardado = productos.listarPorId(req.params.id)
 
-        resp.send(guardado)
+        resp.json(guardado)
 
     } catch (error) {
         next(error)
@@ -51,11 +51,12 @@ router.get('/productos/listar/:id', (req, resp, next) => {
 })
 
 //Agregar nuevo producto
+let id = 0;
 router.post('/productos/guardar/', (req, resp, next) => {
     try {
-
+        id++
         const productos = new Productos(req.body);
-        const guardado = productos.guardar(listaProductos)
+        const guardado = productos.guardar(id)
 
         listaProductos.push(guardado)
     
@@ -78,14 +79,15 @@ router.put('/productos/actualizar/:id', (req, resp) => {
     resp.json(listaProductos)
 })
 
+
 //Método para borrar producto
 router.delete('/productos/borrar/:id', (req, resp)=> {
     const id = req.params.id
     const productos = new Productos(listaProductos);
     let eliminado = productos.borrar(id)
 
-    listaProductos = eliminado.flat(1)
-
+    listaProductos = eliminado
+    
     resp.json(listaProductos)
 })
 
