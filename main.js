@@ -32,7 +32,7 @@ router.get('/productos/listar', (req, resp) => {
         throw new Error('No hay productos cargados')
     }
 
-    resp.send(Object.entries(listaProductos).flat(1))
+    resp.send(listaProductos.flat(1))
     
 })
 
