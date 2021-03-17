@@ -35,21 +35,24 @@ export default class Productos{
     }
 
     actualizar(id, nuevaInfo){
-        const arr = Object.entries(this.arr)
         
-        if(id > arr.length){
+        if(id > this.arr.length){
             
             throw new Error('El producto indicado no existe')
         
         }else{
-            arr[id] = {
+            const idInt = parseInt(id)
+            
+            let index = this.arr.findIndex(elem => elem.id === idInt)
+
+            this.arr[index] = {
                 title: nuevaInfo.title,
                 price: nuevaInfo.price,
                 thumbnail: nuevaInfo.thumbnail,
-                id: parseInt(id)
+                id: idInt
             }
     
-            return arr[id]
+            return this.arr
         }
         
     }

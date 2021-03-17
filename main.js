@@ -70,11 +70,12 @@ router.post('/productos/guardar/', (req, resp, next) => {
 
 //Método para actualizar producto
 router.put('/productos/actualizar/:id', (req, resp) => {
+    
     const id = req.params.id
     const productos = new Productos(listaProductos);
     const respuesta = productos.actualizar(id, req.body)
 
-    listaProductos[id] = respuesta
+    listaProductos = respuesta
 
     resp.json(listaProductos)
 })
