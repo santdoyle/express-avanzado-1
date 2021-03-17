@@ -32,7 +32,7 @@ router.get('/productos/listar', (req, resp) => {
         throw new Error('No hay productos cargados')
     }
 
-    resp.send(listaProductos)
+    resp.send(Object.entries(listaProductos).flat(1))
     
 })
 
@@ -84,7 +84,7 @@ router.delete('/productos/borrar/:id', (req, resp)=> {
     const productos = new Productos(listaProductos);
     let eliminado = productos.borrar(id)
 
-    listaProductos = eliminado
+    listaProductos = eliminado.flat(1)
 
     resp.json(listaProductos)
 })

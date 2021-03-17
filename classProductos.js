@@ -6,7 +6,7 @@ export default class Productos{
     }
 
     listarProductos(){
-        return this.arr
+        return Object.entries(this.arr)
     }
 
     listarPorId(id){
@@ -21,12 +21,12 @@ export default class Productos{
 
     guardar(listado){
 
-        const producto = {
+        const producto = [{
             title: this.arr.title,
             price: this.arr.price,
             thumbnail: this.arr.thumbnail,
             id: listado.length
-        }
+        }]
 
         return producto;
     }
