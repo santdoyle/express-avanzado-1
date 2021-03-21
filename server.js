@@ -1,23 +1,49 @@
 import express from 'express';
+import path from 'path'
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 import Productos from './classProductos.js';
+import handlebars from 'express-handlebars';
+
 const app = express()
 const router = express.Router()
 
+//Configuración express
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
 app.use('/api', router)
 
-const server = app.listen(8080, () => {
-    console.log(`El servidor está conectado: ${server.address().port}`)
-})
-server.on('error', (error) => console.log(`Ocurrió un error: ${error}`))
+//Configuración handlebars
+app.engine('hbs', handlebars({
+    extname: ".hbs",
+    defaultLayout: 'index.hbs',
+    layoutsDir: path.join(__dirname, '/views/layouts'),
+    partialsDir: path.join(__dirname, '/views/partials')
+}))
+app.set('view engine', 'hbs')
+app.set('views', './views')
 
 //Espacio publico del servidor
 app.use('/public', express.static('public'))
 router.get('/public', (req, resp) => {
     resp.sendFile('/public/index.html')
+    resp.sendFile('/public/style.css')
 })
 
+//Servidor
+const server = app.listen(8080, () => {
+    console.log(`El servidor está conectado: ${server.address().port}`)
+})
+server.on('error', (error) => console.log(`Ocurrió un error: ${error}`))
+
+//Endopint para vista con handlebar
+router.get('/productos/vista', (req, resp) => {
+    resp.render('main', {
+        data: true,
+        producto: listaProductos
+    })
+})
 
 //Listado de productos vacio
 let listaProductos = []
@@ -60,7 +86,7 @@ router.post('/productos/guardar/', (req, resp, next) => {
 
         listaProductos.push(guardado)
     
-        resp.json("Producto agregado correctamente")
+        resp.redirect('/public');
         
     } catch (error) {
         next(error)

@@ -1,0 +1,41 @@
+body{
+    background:#eee;    
+}
+
+.contenedor{
+    width: 100%;
+}
+
+.contenedor-tabla{
+    display: block;
+    background: #fff;
+    width: 80%;
+    padding: 20px;
+    margin: 20px 0px;
+}
+
+.formulario{
+    background: #fff;
+    padding: 15px;
+    display: block;
+    margin: 20px auto;
+}
+
+.form-group{
+    padding: 10px;
+}
+
+
+.formulario input{
+    width: 100%;
+    padding: 5px;
+    margin-top: 10;
+}
+
+
+.formulario label {
+	font-size:18px;
+    line-height:32px;
+	font-weight: 400;
+	color: #333;
+}
